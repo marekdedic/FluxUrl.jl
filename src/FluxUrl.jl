@@ -1,6 +1,13 @@
 module FluxUrl
 
-include("SortedBagDataset.jl");
+include("AbstractDataset.jl");
+include("Dataset.jl");
+include("BagDataset.jl");
+include("DoubleBagDataset.jl");
+
+include("MILLayer.jl");
+include("ModifiedMILLayer.jl");
+
 include("UrlDataset.jl");
 
 include("IterableParser.jl");
