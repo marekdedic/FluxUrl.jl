@@ -56,5 +56,5 @@ function loadRandom(;batchSize::Int = 6000, featureCount::Int = 2053, featureGen
 	labels = Vector{Int}(len);
 	foreach(x->urls[x] = randstring(rand(1:100)), [1:len]...);
 	foreach(x->labels[x] = rand(1:2), [1:len]...);
-	return IterableParser(urls, labels, batchSize; featureCount = featureCount, featureGenerator = featureGenerator, parallel, T = T)
+	return IterableParser(urls, labels, batchSize; featureCount = featureCount, featureGenerator = featureGenerator, parallel = parallel, T = T)
 end

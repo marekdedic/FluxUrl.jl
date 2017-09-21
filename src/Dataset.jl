@@ -2,7 +2,7 @@ import Base: getindex;
 
 export Dataset, getindex;
 
-type Dataset{T, U} <: AbstractDataset
+struct Dataset{T, U} <: AbstractDataset
 	X::AbstractMatrix{T};
 	Y::AbstractVector{U};
 end
