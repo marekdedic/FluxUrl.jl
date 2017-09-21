@@ -3,7 +3,7 @@ import StatsBase;
 
 export IterableParser, start, next, done, sample;
 
-type IterableParser
+struct IterableParser
 	urls::Vector{AbstractString};
 	labels::Vector{Int};
 	batchSize::Int;
@@ -27,7 +27,7 @@ function start(::IterableParser)::Int
 	return 1;
 end
 
-function next(iter::IterableParser, state::Int)::Tuple{Dataset, Int}
+function next(iter::IterableParser, state::Int)::Tuple{AbstractDataset, Int}
 	if iter.batchSize == 0
 		start = 1;
 		stop = length(iter.labels);

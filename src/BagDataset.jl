@@ -2,7 +2,7 @@ import Base: getindex;
 
 export BagDataset, getindex;
 
-type BagDataset{T, U} <: AbstractDataset
+struct BagDataset{T, U} <: AbstractDataset
 	X::AbstractMatrix{T};
 	bags::AbstractVector{UnitRange{Int}};
 	Y::AbstractVector{U};
