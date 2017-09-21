@@ -2,13 +2,13 @@ import Flux;
 
 export ModifiedMILLayer;
 
-struct ModifiedMILLayer
-	NN::AbstractVector{Flux.Chain};
+struct ModifiedMILLayer <: Flux.AbstractLayer
+	NN::AbstractVector{Flux.AbstractLayer};
 	aggregation::Function;
 end
 
-function ModifiedMILLayer(NN::Flux.Chain, instanceCount::Int, aggregation::Function)
-	NNvec = Vector{Flux.Chain}(instanceCount);
+function ModifiedMILLayer(NN::Flux.AbstractLayer, instanceCount::Int, aggregation::Function)::ModifiedMILLayer
+	NNvec = Vector{Flux.AbstractLayer}(instanceCount);
 	NNvec[1] = NN;
 	NNvec[2:end] .= deepcopy(NN);
 	return ModifiedMILLayer(NNvec, aggregation);
