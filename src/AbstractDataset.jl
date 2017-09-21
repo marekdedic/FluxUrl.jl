@@ -20,6 +20,9 @@ function sliceMatrix(X::AbstractMatrix)::AbstractVector{AbstractVector}
 	return map(y->view(X, :, y), 1:size(X, 2));
 end
 
-function sliceMatrix(X::AbstractMatrix, ranges::AbstractVector{UnitRange})::AbstractVector{AbstractArray}
+function sliceMatrix(X::AbstractMatrix, ranges::AbstractVector{UnitRange{Int}})::AbstractVector{AbstractArray}
 	return map(y->view(X, :, y), ranges);
 end
+
+sliceMatrix(X::AbstractVector) = [X];
+sliceMatrix(X::AbstractVector, ranges::AbstractVector{UnitRange{Int}}) = [X];
