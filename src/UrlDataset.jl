@@ -13,7 +13,7 @@ function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, 
 	bags = findranges(urlIDs);
 	subbags = Vector{UnitRange{Int}}(length(bags));
 	bagLabels = map(b->maximum(labels[b]), bags);
-	for i, bag in enumerate(bags)
+	for (i, bag) in enumerate(bags)
 		bagfeatures = view(features, :, bag);
 		if(!issorted(urlParts[bag]))
 			permutation = sortperm(urlParts[bag]);
