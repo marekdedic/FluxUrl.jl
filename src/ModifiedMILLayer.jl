@@ -14,4 +14,4 @@ function ModifiedMILLayer(NN::Flux.AbstractLayer, instanceCount::Int, aggregatio
 	return ModifiedMILLayer(NNvec, aggregation);
 end
 
-(a::ModifiedMILLayer)(x) = a.aggregation(map(i->a.NN[i](x[i]), 1:length(x)));
+(a::ModifiedMILLayer)(x) = a.aggregation(map(i->(a.NN[i])(x[i]), 1:length(x)));

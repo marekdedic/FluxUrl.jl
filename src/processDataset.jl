@@ -22,12 +22,12 @@ function separateUrl(url::AbstractString)::Tuple{Vector{AbstractString}, Vector{
 	end
 	splitted = split(url, "/");
 	rawDomain = splitted[1];
-	if(startswith(rawDomain, "HEX"))
-		domain = Vector{AbstractString}();
-		push!(domain, decodeHEX(rawDomain));
-	else
+	#if(startswith(rawDomain, "HEX"))
+		#domain = Vector{AbstractString}();
+		#push!(domain, decodeHEX(rawDomain));
+	#else
 		domain = split(rawDomain, ".");
-	end
+	#end
 	splitted = splitted[2:end];
 	path = Vector{AbstractString}();
 	query = Vector{AbstractString}();

@@ -21,7 +21,7 @@ function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, 
 		end
 		subbags[bag] = findranges(urlParts[bag]);
 	end
-	return DoubleBagDataset(features, bags, subbags, labels);
+	return DoubleBagDataset(features, bags, subbags, bagLabels);
 end
 
 function findranges(ids::AbstractArray)
