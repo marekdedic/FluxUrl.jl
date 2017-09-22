@@ -5,6 +5,7 @@ include("Dataset.jl");
 include("BagDataset.jl");
 include("DoubleBagDataset.jl");
 
+include("layers.jl");
 include("MILLayer.jl");
 include("ModifiedMILLayer.jl");
 
