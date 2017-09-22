@@ -9,7 +9,7 @@ struct BagDataset{T, U} <: AbstractDataset
 end
 
 function getindex(dataset::BagDataset, index::Int)
-	return (sliceMatrix(dataset.X[dataset.bags[index]]), dataset.Y[index]);
+	return (sliceMatrix(dataset.X[:, dataset.bags[index]]), dataset.Y[index]);
 end
 
 function length(dataset::BagDataset)::Int
