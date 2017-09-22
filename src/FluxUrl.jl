@@ -19,4 +19,6 @@ include("labellers.jl");
 include("loadDataset.jl");
 include("processDataset.jl");
 
+include("Model.jl");
+
 end
