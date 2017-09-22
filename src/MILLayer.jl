@@ -7,4 +7,4 @@ struct MILLayer <: Flux.AbstractLayer
 	aggregation::Function;
 end
 
-(a::MILLayer)(x) = a.aggregation(map(y->a.NN(y), x));
+(a::MILLayer)(x) = a.aggregation(map(y->(a.NN)(y), x));
