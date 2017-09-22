@@ -14,10 +14,9 @@ function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, 
 	subbags = Vector{UnitRange{Int}}(3*length(bags));
 	bagLabels = map(b->maximum(labels[b]), bags);
 	for bag in bags
-		bagfeatures = view(features, :, bag);
 		if(!issorted(urlParts[bag]))
 			permutation = sortperm(urlParts[bag]);
-			bagfeatures = bagfeatures[:, permutation];
+			features[:, bag] = features[:, bag][:, permutation];
 			urlParts[bag] = urlParts[bag][permutation];
 		end
 		subbags[bag] = findranges(urlParts[bag]);

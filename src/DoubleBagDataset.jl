@@ -10,7 +10,7 @@ struct DoubleBagDataset{T, U} <: AbstractDataset
 end
 
 function getindex(dataset::DoubleBagDataset, index::Int)
-	return (map(sliceMatrix, sliceMatrix(dataset.X[dataset.bags[index]], dataset.subbags[dataset.bags[index]])), dataset.Y[index]);
+	return (map(sliceMatrix, sliceMatrix(dataset.X[:, dataset.bags[index]], dataset.subbags[dataset.bags[index]])), dataset.Y[index]);
 end
 
 function length(dataset::DoubleBagDataset)::Int
