@@ -1,6 +1,6 @@
 export UrlDataset;
 
-const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{T, Int};
+const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Int};
 
 function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, urlIDs::Vector{Int}, urlParts::Vector{Int}; info::Vector{AbstractString} = Vector{AbstractString}(0))::UrlDataset
 	if(!issorted(urlIDs))

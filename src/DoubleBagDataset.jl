@@ -2,8 +2,8 @@ import Base: getindex, length;
 
 export DoubleBagDataset, getindex, length;
 
-struct DoubleBagDataset{T, U} <: AbstractDataset
-	X::AbstractMatrix{T};
+struct DoubleBagDataset{T <: AbstractMatrix, U} <: AbstractDataset
+	X::T;
 	bags::AbstractVector{UnitRange{Int}};
 	subbags::AbstractVector{UnitRange{Int}};
 	Y::AbstractVector{U};
