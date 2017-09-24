@@ -2,8 +2,8 @@ import Base: getindex, length;
 
 export Dataset, getindex, length;
 
-struct Dataset{T, U} <: AbstractDataset
-	X::AbstractMatrix{T};
+struct Dataset{T <: AbstractMatrix, U} <: AbstractDataset
+	X::T;
 	Y::AbstractVector{U};
 end
 
