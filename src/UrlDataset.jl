@@ -1,8 +1,8 @@
 export UrlDataset;
 
-const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Int};
+const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int};
 
-function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, urlIDs::Vector{Int}, urlParts::Vector{Int}; info::Vector{AbstractString} = Vector{AbstractString}(0))::UrlDataset
+function UrlDataset{T<:AbstractFloat}(features::AbstractMatrix{T}, labels::AbstractVector{Int}, urlIDs::AbstractVector{Int}, urlParts::AbstractVector{Int}; info::AbstractVector{AbstractString} = Vector{AbstractString}(0))::UrlDataset
 	if(!issorted(urlIDs))
 		permutation = sortperm(urlIDs);
 		features = features[:, permutation];
@@ -11,17 +11,17 @@ function UrlDataset{T<:AbstractFloat}(features::Matrix{T}, labels::Vector{Int}, 
 		urlParts = urlParts[permutation];
 	end
 	bags = findranges(urlIDs);
-	subbags = Vector{UnitRange{Int}}(3*length(bags));
+	subbags = Vector{Vector{UnitRange{Int}}}(length(bags));
 	bagLabels = map(b->maximum(labels[b]), bags);
-	for bag in bags
+	for (i, bag) in enumerate(bags)
 		if(!issorted(urlParts[bag]))
 			permutation = sortperm(urlParts[bag]);
 			features[:, bag] = features[:, bag][:, permutation];
 			urlParts[bag] = urlParts[bag][permutation];
 		end
-		subbags[bag] = findranges(urlParts[bag]);
+		subbags[i] = findranges(urlParts[bag]);
 	end
-	return DoubleBagDataset(features, bags, subbags, bagLabels);
+	return DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int}(SparseMatrixCSC(features), bags, subbags, bagLabels);
 end
 
 function findranges(ids::AbstractArray)
