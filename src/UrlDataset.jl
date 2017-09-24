@@ -1,3 +1,5 @@
+import Requires
+
 export UrlDataset;
 
 const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int};
@@ -22,6 +24,37 @@ function UrlDataset{T<:AbstractFloat}(features::AbstractMatrix{T}, labels::Abstr
 		subbags[i] = findranges(urlParts[bag]);
 	end
 	return DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int}(SparseMatrixCSC(features), bags, subbags, bagLabels);
+end
+
+Requires.@require Datasets begin
+
+	function UrlDataset(ds::Datasets.UrlDataset)
+		features = spzeros(Float32, size(ds.domain.data, 2), size(ds.domain.data, 1) + size(ds.path.data, 1) + size(ds.query.data, 1));
+		bags = Vector{UnitRange{Int}}(length(ds.target));
+		subbags = Vector{Vector{UnitRange{Int}}}(length(ds.target));
+		k = 1;
+		for i in 1:length(ds.target)
+			dl = length(ds.domain.bags[i])
+			pl = length(ds.path.bags[i])
+			ql = length(ds.query.bags[i])
+			bags[i] = k:(k + dl + pl + ql);
+			subbags[i] = [1:dl,(dl + 1):(dl + pl),(dl + pl + 1):(dl + pl + ql)]
+			for j in 1:dl
+				features[:, k] = ds.domain.data[ds.domain.bags[i], :][j, :];
+				k += 1;
+			end
+			for j in 1:pl
+				features[:, k] = ds.path.data[ds.path.bags[i], :][j, :];
+				k += 1;
+			end
+			for j in 1:ql
+				features[:, k] = ds.query.data[ds.query.bags[i], :][j, :];
+				k += 1;
+			end
+		end
+		return DoubleBagDataset(features, bags, subbags, ds.target);
+	end
+
 end
 
 function findranges(ids::AbstractArray)
