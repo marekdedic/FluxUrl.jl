@@ -2,7 +2,7 @@ import Requires
 
 export UrlDataset;
 
-const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int};
+const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Int};
 
 function UrlDataset{T<:AbstractFloat}(features::AbstractMatrix{T}, labels::AbstractVector{Int}, urlIDs::AbstractVector{Int}, urlParts::AbstractVector{Int}; info::AbstractVector{AbstractString} = Vector{AbstractString}(0))::UrlDataset
 	if(!issorted(urlIDs))
