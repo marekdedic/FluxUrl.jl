@@ -1,6 +1,6 @@
 import Base: start, next, done;
 
-export AbstractDataset, start, next, done;
+export AbstractDataset, start, next, done, sample;
 
 abstract type AbstractDataset end
 
@@ -14,6 +14,11 @@ end
 
 function done(dataset::AbstractDataset, state::Int)::Bool
 	return state > length(dataset.Y);
+end
+
+function sample(dataset::AbstractDataset, count::Int)
+	indices = StatsBase.sample(1:length(dataset), count);
+	return map(i->dataset[i], indices)
 end
 
 function sliceMatrix(X::AbstractMatrix)::AbstractVector{AbstractVector}
