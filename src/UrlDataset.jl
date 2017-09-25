@@ -37,7 +37,7 @@ Requires.@require Datasets begin
 			dl = length(ds.domain.bags[i])
 			pl = length(ds.path.bags[i])
 			ql = length(ds.query.bags[i])
-			bags[i] = k:(k + dl + pl + ql);
+			bags[i] = k:(k + dl + pl + ql - 1);
 			subbags[i] = [1:dl,(dl + 1):(dl + pl),(dl + pl + 1):(dl + pl + ql)]
 			for j in 1:dl
 				features[:, k] = ds.domain.data[ds.domain.bags[i], :][j, :];

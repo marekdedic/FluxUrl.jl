@@ -50,8 +50,7 @@ function loadThreatGrid(dir::AbstractString; labeller::Function = countingLabell
 	return IterableParser(vcat(urls...), labels, batchSize; featureCount = featureCount, featureGenerator = featureGenerator, parallel, T = T)
 end
 
-function loadRandom(;batchSize::Int = 6000, featureCount::Int = 2053, featureGenerator::Function = trigramFeatureGenerator, parallel::Bool = false, T::DataType = Float32)::IterableParser
-	len = rand(50000:100000);
+function loadRandom(len::Int;batchSize::Int = 6000, featureCount::Int = 2053, featureGenerator::Function = trigramFeatureGenerator, parallel::Bool = false, T::DataType = Float32)::IterableParser
 	urls = Vector{AbstractString}(len);
 	labels = Vector{Int}(len);
 	foreach(x->urls[x] = randstring(rand(1:100)), [1:len]...);
