@@ -2,8 +2,6 @@ module FluxUrl
 
 include("AbstractDataset.jl");
 include("Dataset.jl");
-include("BagDataset.jl");
-include("DoubleBagDataset.jl");
 include("MultiBagDataset.jl");
 
 include("layers.jl");
