@@ -54,4 +54,12 @@ end
 
 function processDataset(urls::Vector{AbstractString}, labels::Vector{Int}; featureCount::Int = 2053, featureGenerator::Function = trigramFeatureGenerator, T::DataType = Float32)::UrlDataset
 	return UrlDataset(map(i->(map(part->map(token->featureGenerator(token, featureCount; T = T), part), separateUrl(urls[i])) ,labels[i]), 1:length(labels)));
-end # TODO: Add parallel
+end
+
+Requires.@require ThreadedMap begin
+
+	function processDatasetParallel(urls::Vector{AbstractString}, labels::Vector{Int}; featureCount::Int = 2053, featureGenerator::Function = trigramFeatureGenerator, T::DataType = Float32)::UrlDataset
+		return UrlDataset(ThreadedMap.tmap(i->(ThreadedMap.tmap(part->ThreadedMap.tmap(token->featureGenerator(token, featureCount; T = T), part), separateUrl(urls[i])) ,labels[i]), 1:length(labels)));
+	end
+
+end
