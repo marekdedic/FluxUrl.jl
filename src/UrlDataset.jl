@@ -2,28 +2,10 @@ import Requires
 
 export UrlDataset;
 
-const UrlDataset{T<:AbstractFloat} = DoubleBagDataset{SparseMatrixCSC{T}, Int};
+const UrlDataset{T<:AbstractFloat, Ti <:Integer} = DoubleBagDataset{SparseMatrixCSC{T, Ti}, Int};
 
-function UrlDataset{T<:AbstractFloat}(features::AbstractMatrix{T}, labels::AbstractVector{Int}, urlIDs::AbstractVector{Int}, urlParts::AbstractVector{Int}; info::AbstractVector{AbstractString} = Vector{AbstractString}(0))::UrlDataset
-	if(!issorted(urlIDs))
-		permutation = sortperm(urlIDs);
-		features = features[:, permutation];
-		labels = labels[permutation];
-		urlIDs = urlIDs[permutation];
-		urlParts = urlParts[permutation];
-	end
-	bags = findranges(urlIDs);
-	subbags = Vector{Vector{UnitRange{Int}}}(length(bags));
-	bagLabels = map(b->maximum(labels[b]), bags);
-	for (i, bag) in enumerate(bags)
-		if(!issorted(urlParts[bag]))
-			permutation = sortperm(urlParts[bag]);
-			features[:, bag] = features[:, bag][:, permutation];
-			urlParts[bag] = urlParts[bag][permutation];
-		end
-		subbags[i] = findranges(urlParts[bag]);
-	end
-	return DoubleBagDataset{SparseMatrixCSC{T}, Vector{UnitRange{Int}}, Int}(SparseMatrixCSC(features), bags, subbags, bagLabels);
+function UrlDataset(dataset::AbstractVector{Tuple{T, U}})::UrlDataset where {T <: AbstractVector, U}
+	return MultiBagDataset(dataset; sparse = true);
 end
 
 Requires.@require Datasets begin
