@@ -16,7 +16,7 @@ function decodeHEX(input::AbstractString)::AbstractString
 end
 
 "Separates a given URL into 3 parts - domain, query, and path."
-function separateUrl(url::AbstractString)::Tuple{Vector{AbstractString}, Vector{AbstractString}, Vector{AbstractString}}
+function separateUrl(url::AbstractString)::Vector{Vector{AbstractString}}
 	if contains(url, "://")
 		url = split(url, "://")[2];
 	end
@@ -49,39 +49,9 @@ function separateUrl(url::AbstractString)::Tuple{Vector{AbstractString}, Vector{
 	if(length(query) == 0)
 		push!(query, "");
 	end
-	return (domain, path, query);
+	return [domain, path, query];
 end
 
 function processDataset(urls::Vector{AbstractString}, labels::Vector{Int}; featureCount::Int = 2053, featureGenerator::Function = trigramFeatureGenerator, T::DataType = Float32)::UrlDataset
-	features = Vector{Vector{T}}(0);
-	processedLabels = Vector{Int}(0);
-	bags = Vector{Int}(0);
-	urlParts = Vector{Int}(0);
-	info = Vector{AbstractString}(0);
-
-	for j in 1:size(labels, 1)
-		(domain, path, query) = separateUrl(urls[j]);
-		for i in domain
-			push!(features, featureGenerator(i, featureCount; T = T));
-			push!(processedLabels, labels[j]);
-			push!(bags, j);
-			push!(urlParts, 1);
-			push!(info, urls[j]);
-		end
-		for i in path
-			push!(features, featureGenerator(i, featureCount; T = T));
-			push!(processedLabels, labels[j]);
-			push!(bags, j);
-			push!(urlParts, 2);
-			push!(info, urls[j]);
-		end
-		for i in query
-			push!(features, featureGenerator(i, featureCount; T = T));
-			push!(processedLabels, labels[j]);
-			push!(bags, j);
-			push!(urlParts, 3);
-			push!(info, urls[j]);
-		end
-	end
-	return UrlDataset(hcat(features...), processedLabels, bags, urlParts; info = info);
-end
+	return UrlDataset(map(i->(map(part->map(token->featureGenerator(token, featureCount; T = T), part), separateUrl(urls[i])) ,labels[i]), 1:length(labels)));
+end # TODO: Add parallel
