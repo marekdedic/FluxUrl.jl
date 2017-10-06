@@ -38,23 +38,3 @@ Requires.@require Datasets begin
 	end
 
 end
-
-function findranges(ids::AbstractArray)
-	if !issorted(ids)
-		error("ids parameter should be sorted")
-	end
-	bags=fill(0:0,length(unique(ids)))
-	idx=1
-	bidx=1
-	for i in 2:length(ids)
-		if ids[i]!=ids[idx]
-			bags[bidx]=idx:i-1
-			idx=i;
-			bidx+=1;
-		end
-	end
-	if bidx<=length(bags)
-		bags[bidx]=idx:length(ids)
-	end
-	return(bags)
-end
