@@ -2,8 +2,8 @@ import Flux;
 
 export MILLayer;
 
-struct MILLayer <: Flux.AbstractLayer
-	NN::Flux.AbstractLayer;
+struct MILLayer
+	NN;
 	aggregation::Function;
 end
 
